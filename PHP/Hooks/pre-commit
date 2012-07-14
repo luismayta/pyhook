@@ -1,6 +1,6 @@
 #!/bin/bash
-# Author: Boris Guéry <guery.b@gmail.com>
-# https://github.com/borisguery/git-keywords-checker
+# Author: Luis Alberto Mayta  <slovacus@gmail.com>
+# https://github.com/luismayta/Hooks-git/
 
 # Add or remove keywords here
 KEYWORDS_REGEX="is_writeable\(|chop\(|strchr\(|print\(|var_dump\(|Zend_Debug::|print_r\(|console\.(debug|info|log|warn)\("
