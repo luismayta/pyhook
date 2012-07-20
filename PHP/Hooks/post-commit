@@ -1,0 +1,26 @@
+#!/bin/sh
+# Todo: mejorar el codigo
+# Author: slovacus@gmail.com
+# luis Alberto Mayta
+
+
+# Add extensions to check here
+EXTENSIONS_REGEX="(.css$|.js$)"
+echo -e "paso 1." 
+
+FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD)
+RESULT="false"
+echo -e "$FILES" 
+for FILE in $FILES; do
+if [[ $FILE =~ $EXTENSIONS_REGEX ]]; then
+	$RESULT="true"
+	echo -e  "aca pasa el valor." 
+fi
+done
+echo -e "$RESULT" 
+if [ "$RESULT" == "true" ]; then
+	git log -1 --format=%h > src/last_commit
+	echo -e "Actualizando File last_commit." 
+    exit 0
+fi
+

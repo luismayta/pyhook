@@ -1,0 +1,13 @@
+#!/bin/sh
+# Author: Luis Alberto Mayta  <slovacus@gmail.com>
+# https://github.com/luismayta/Hooks-git/
+# este hook agrega el nombre del branch antes del mensaje del commit
+
+
+ORIG_MSG_FILE="$1"
+TEMP=`mktemp /tmp/git-XXXXX`
+
+TICKETNO=`git branch | grep '^\*' | cut -b3-`
+
+(echo "[$TICKETNO]"; cat "$ORIG_MSG_FILE") > "$TEMP" 
+cat "$TEMP" > "$ORIG_MSG_FILE"
