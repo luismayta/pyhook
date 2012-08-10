@@ -1,26 +1,24 @@
-#!/bin/sh
-# Todo: mejorar el codigo
-# Author: slovacus@gmail.com
-# luis Alberto Mayta
+#!/bin/bash
+#author @slovacus
+# luis alberto Mayta
+EXTENSIONS_REGEX="(.css$|.js$|.png$|.jpg$|.bmp$|.gif$)"
+ULTIMO_COMMIT=$(git rev-list --max-count=1 HEAD)
+PENULTIMO_COMMIT=$(git rev-list --max-count=1 HEAD~1)
+FILES=$(git diff $ULTIMO_COMMIT $PENULTIMO_COMMIT --name-only)
+echo -e "$FILES"
 
-
-# Add extensions to check here
-EXTENSIONS_REGEX="(.css$|.js$)"
-echo -e "paso 1." 
-
-FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD)
-RESULT="false"
-echo -e "$FILES" 
 for FILE in $FILES; do
-if [[ $FILE =~ $EXTENSIONS_REGEX ]]; then
-	$RESULT="true"
-	echo -e  "aca pasa el valor." 
-fi
+	if [[ $FILE =~ $EXTENSIONS_REGEX ]]; then
+		RESULT="true"
+	fi
 done
+
 echo -e "$RESULT" 
 if [ "$RESULT" == "true" ]; then
 	git log -1 --format=%h > src/last_commit
-	echo -e "Actualizando File last_commit." 
+	git add .
+	git commit -m "update last_commit" --no-verify
+	echo -e "se actualizo File last_commit." 
     exit 0
 fi
 
