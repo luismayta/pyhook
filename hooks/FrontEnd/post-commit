@@ -20,7 +20,9 @@ for FILE in $FILES; do
 			if [[ $FILE = ${EXTENSION[0]} ]]; then # si el archivo es css entonces reemplazara el texto version
 				IDCOMMIT=$(set -f; git log -1 --format=%h)
 				sed -i "s/version/v=$IDCOMMIT/g" $FILE
-				echo "- - - - - -> reemplazando version dentro del css"
+				echo -e ""
+				echo "reemplazando version dentro del css"
+				echo -e ""
 			fi
 			#echo "extension estatica detectada - - - > ${I}"
 			RESULT="true"
