@@ -1,85 +1,61 @@
 #!/bin/bash
 # Author: Luis Alberto Mayta  <slovacus@gmail.com>
 # https://github.com/luismayta/Hooks-git/
-KEYWORDS_REGEX="is_writeable\(|chop\(|strchr\(|join\(|print\(|rand\(|var_dump\(|Zend_Debug::|print_r\(|console\.(debug|info|log|warn)\("
+KEYWORDS_REGEX="eval\(|eval"
 # Add extensions to check here
-EXTENSIONS_REGEX="(.php$|.phtml$|.js$)"
-EXTENSIONS_REGEX_LAST_DATE="(.php$|.phtml$)"
-EXTENSIONS_REGEX_LASTCOMMIT="(.css$|.js$)"
-FUNCTION_SPEED="chop => rtrim | is_writeable => is_writable | strchr => strstr | join => implode "
-FUNCTION_SPEED1="dir => getdir | strlen => isset | str_replace => strstr | require_once => require "
-FUNCTION_SPEED2="print => echo | rand => mt_rand | "
-MSG1="cambiar funciones lentas por :"
-UPDATE_LASTCOMMIT=0
-UPDATE_LASTDATE=0
+EXTENSIONS_REGEX="(.php$|.phtml$|.inc$)"
 ERRORS_BUFFER=""
+
 TEXT_DEFAULT="\\033[0;39m"
 TEXT_INFO="\\033[1;32m"
 TEXT_ERROR="\\033[1;31m"
 TEXT_UNDERLINE="\\0033[4m"
 TEXT_BOLD="\\0033[1m"
-
+MSG1="Revisar los Siguientes Archivos"
 FILES=$(git diff-index --cached --name-only --diff-filter=ACMR HEAD)
 
 echo -e "\\033[1;33m""Keywords checker - pre-commit hook" "$TEXT_DEFAULT"
-echo
 
 for FILE in $FILES; do
-if [[ $FILE =~ $EXTENSIONS_REGEX ]]; then
-    echo -e "$TEXT_INFO" "Checking file: $FILE" "$TEXT_DEFAULT"
+
+    if [[ $FILE =~ $EXTENSIONS_REGEX ]]; then
+
+        echo -e "$TEXT_INFO" "Checking file: $FILE" "$TEXT_DEFAULT"
         ERRORS=""
+
         while IFS=: read -ra RESULT; do
-    if [ "$RESULT" != "" ]; then
-        ERRORS="$ERRORS\n\tline $TEXT_BOLD${RESULT[1]}$TEXT_DEFAULT: "
+
+            if [ "$RESULT" != "" ]; then
+                ERRORS="$ERRORS\n\tline $TEXT_BOLD${RESULT[1]}$TEXT_DEFAULT: "
                 ERRORS="$ERRORS"$(sed -n ${RESULT[1]}p $FILE | sed -E "s/($KEYWORDS_REGEX)/\\$TEXT_UNDERLINE\1\\$TEXT_DEFAULT/g")
+
                 if [ "$ERRORS_BUFFER" != "" ]; then
-                ERRORS_BUFFER="$ERRORS_BUFFER\n$ERRORS"
+                    ERRORS_BUFFER="$ERRORS_BUFFER\n$ERRORS"
                 else
-                ERRORS_BUFFER="$ERRORS"
+                    ERRORS_BUFFER="$ERRORS"
                 fi
-    fi
-        done < <(grep -sEnH $KEYWORDS_REGEX $FILE)
-            if [ "$ERRORS" != "" ]; then
-                ERRORS="$TEXT_ERROR Errors found in $TEXT_BOLD$FILE$TEXT_DEFAULT$ERRORS"
-                echo -e "$ERRORS"
-            else
-                echo -e "$TEXT_INFO No errors found in $TEXT_BOLD$FILE$TEXT_DEFAULT\n"
             fi
-fi
-if [[ $FILE =~ $EXTENSIONS_REGEX_LASTCOMMIT ]]; then
-    UPDATE_LASTCOMMIT="1"
-fi
-if [[ $FILE =~ $EXTENSIONS_REGEX_LASTDATE ]]; then
-    UPDATE_LASTDATE="1"
-fi
+
+        done < <(grep -sEnH $KEYWORDS_REGEX $FILE)
+
+        if [ "$ERRORS" != "" ]; then
+            ERRORS="$TEXT_ERROR Errors found in $TEXT_BOLD$FILE$TEXT_DEFAULT$ERRORS"
+            echo -e "$ERRORS"
+        else
+            echo -e "$TEXT_INFO No errors found in $TEXT_BOLD$FILE$TEXT_DEFAULT\n"
+        fi
+    fi
 
 done
 
 if [ "$ERRORS_BUFFER" != "" ]; then
-echo
+    echo
     echo -e "$TEXT_ERROR" "There were errors or warnings, commit aborted." "$TEXT_DEFAULT"
     echo -e "$MSG1"
-    echo -e "$FUNCTION_SPEED"
-    echo -e "$FUNCTION_SPEED1" 
-    echo -e "$FUNCTION_SPEED2"
     echo -e "$TEXT_INFO" "If you are sure you want to commit those files, use --no-verify option" "$TEXT_DEFAULT"
 
     exit 1
 else
-echo "verificando para actualizar last_commit"
-
-if [ "$UPDATE_LASTCOMMIT" != "0" ]; then
-    git log -1 --format=%h > src/last_commit
-    echo -e "Actualizando File last_commit."    
-fi
-
-echo "verificando para actualizar last_date"
-
-if [ "$UPDATE_LASTDATE" != "0" ]; then
-    echo `date +%d-%m-%Y` > src/last_date
-    echo -e "Actualizando Last Date."   
-fi
-
-echo -e "$TEXT_INFO" "All files are clean." "$TEXT_DEFAULT"
+    echo -e "$TEXT_INFO" "All files are clean." "$TEXT_DEFAULT"
     exit 0
 fi
