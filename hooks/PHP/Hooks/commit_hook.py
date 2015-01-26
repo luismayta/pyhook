@@ -1,23 +1,14 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-"""
-Git pre-commit hook for checking code php instructions
+""" Commit Hook Library """
 
-Author:
-    Luis Alberto Mayta
-
-"""
-
-VERSION = '0.1.0'
-
-import argparse
-import sys
 import decimal
 import os
 import re
 import sys
 import subprocess
 import collections
+import configParser
 
 
 ExecutionResult = collections.namedtuple(
@@ -42,7 +33,7 @@ def _execute(cmd):
 def _current_commit():
     if _execute('git rev-parse --verify HEAD'.split()).status:
         return '4b825dc642cb6eb9a060e54bf8d69288fbee4904'
-    else:
+    else
         return 'HEAD'
 
 def _get_list_of_committed_files():
@@ -83,10 +74,12 @@ def check_repo():
     """
     files_php = []
 
+    all_files_passed = True
+
     for filename in _get_list_of_committed_files():
         try:
             if _is_file_php(filename):
-                files_php.append((filename, None))
+                files_php.append(filename, None)
         except IOError:
             print 'File not Found (probably deleted): {}\t\tSKIPPED'.format(
                 filename)
@@ -94,49 +87,4 @@ def check_repo():
     if len(files_php) == 0:
         sys.exit(0)
 
-    return check_file_validator(files_php)
-
-def check_file_validator(files):
-    """Check Text files
-    """
-    functions_black_list = (
-        "eval",
-        "var_dump",
-        "print_r",
-    )
-
-    list_lines = []
-
-    for str_file in files:
-        with open(str_file[0], 'r') as filename:
-            for line, value in enumerate(filename):
-                result = [i for i in functions_black_list if i in value]
-                if result:
-                    list_lines.append(
-                        (str_file[0], line, value,)
-                    )
-
-    return list_lines
-
-
-def main():
-    """ Main functions handling configuration files etc"""
-
-    result = check_repo()
-    if result:
-        print "Se encontraron los siguientes Errores"
-        for error in result:
-            print "file: {0} line: {1} codigo: {2}".format(error[0],
-                                                         error[1],
-                                                         error[2])
-        message = ("If you are sure you want to commit",
-                   "those files,",
-                   "use --no-verify option",)
-        print(" ".join(message))
-        sys.exit(1)
-
-if __name__ == '__main__':
-    main()
-    sys.exit(0)
-
-sys.exit(1)
+    return all_files_passed
