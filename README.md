@@ -28,19 +28,15 @@
 **Debian**
 
     ```bash
-
         $ sudo apt-get update
         $ sudo apt-get install python-dev
         $ sudo apt-get install git
-
     ```
 **Centos**
 
     ```bash
-
        $ yum -y update
        $ yum groupinstall -y 'development tools'
-
     ```
 
 **OS X**
