@@ -1,70 +1,66 @@
-=========
-Hooks-git
-=========
+# Hooks-git
+
+## About
 
 
-About
-=====
-
-
-Requeriments
-============
+## Requeriments
 
 **Linux**
 
-    * Python 2.7.x
-    * Git
+* Python 2.7.x
+* Git
 
 **OS-X**
 
-    * Brew
-    * Python 2.7.x
-    * Git
+* Brew
+* Python 2.7.x
+* Git
 
 **Microsoft Windows**
 
-    * Python 2.7.x
-    * Git
+* Python 2.7.x
+* Git
 
-Installation
-============
+## Installation
 
 **Linux**
 
-    **Debian**
+**Debian**
 
-        .. code-block:: bash
+    ```bash
 
-           $ sudo apt-get update
-           $ sudo apt-get install python-dev
-           $ sudo apt-get install git
+        $ sudo apt-get update
+        $ sudo apt-get install python-dev
+        $ sudo apt-get install git
 
-    **Centos**
+    ```
+**Centos**
 
-        .. code-block:: bash
+    ```bash
 
-           $ yum -y update
-           $ yum groupinstall -y 'development tools'
+       $ yum -y update
+       $ yum groupinstall -y 'development tools'
+
+    ```
 
 **OS X**
 
-    .. code-block:: bash
+    ```bash
 
         $ brew install python
         $ brew install git
 
+    ```
+
 **Microsoft**
 
-    .. code-block:: bash
+    ```bash
 
         $ http://git-scm.com/downloads
         $ https://www.python.org
 
+    ```
 
-Documentation
-=============
+## How To Use
 
-.. toctree::
-   :maxdepth: 4
-
-   docs/index.rst
+   docs/how-to.md
