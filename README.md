@@ -32,30 +32,27 @@ $ sudo apt-get update
 $ sudo apt-get install python-dev
 $ sudo apt-get install git
 ```
+
 **Centos**
 
-    ```bash
-       $ yum -y update
-       $ yum groupinstall -y 'development tools'
-    ```
+```bash
+$ yum -y update
+$ yum groupinstall -y 'development tools'
+```
 
 **OS X**
 
-    ```bash
-
-        $ brew install python
-        $ brew install git
-
-    ```
+```bash
+$ brew install python
+$ brew install git
+```
 
 **Microsoft**
 
-    ```bash
-
-        $ http://git-scm.com/downloads
-        $ https://www.python.org
-
-    ```
+```bash
+$ http://git-scm.com/downloads
+$ https://www.python.org
+```
 
 ## How To Use
 

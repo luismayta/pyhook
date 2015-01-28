@@ -1,77 +1,69 @@
-#Installation
+# How To Use
 
-***
-*Theme Name:* Theme  
-*Author:* Suhail Dawood  
-*Created:* 08/06/2012  
-*Version:* 1.0.1  
-***
-Installation
-============
+Clonar el repo de Hooks:
 
+```bash
+$ git clone "repo de hooks git"
+```
 
-About
-=====
+Ir al repo que se desea agregar el hook y hacer lo siguiente:
 
+```bash
+$ cp pre-commit .git/hook
+$ chmod +x .git/hook/pre-commit
+```
 
-Requeriments
-============
+## Example
 
-**Linux**
-
-    * Python 2.7.x
-    * Git
-
-**OS-X**
-
-    * Brew
-    * Python 2.7.x
-    * Git
-
-**Microsoft Windows**
-
-    * Python 2.7.x
-    * Git
-
-Installation
-============
-
-**Linux**
-
-    **Debian**
-
-        .. code-block:: bash
-
-           $ sudo apt-get update
-           $ sudo apt-get install python-dev
-           $ sudo apt-get install git
-
-    **Centos**
-
-        .. code-block:: bash
-
-           $ yum -y update
-           $ yum groupinstall -y 'development tools'
-
-**OS X**
-
-    .. code-block:: bash
-
-        $ brew install python
-        $ brew install git
-
-**Microsoft**
-
-    .. code-block:: bash
-
-        $ http://git-scm.com/downloads
-        $ https://www.python.org
+para comprobarlo vamos a generar un archivo php
 
 
-Documentation
-=============
+```bash
+$ vim test.php
+```
 
-.. toctree::
-   :maxdepth: 4
+Incluir lo siguiente:
 
-   docs/index.rst
+```bash
+<?php
+    var_dump("Test Pre-commit");
+    print_r("Test Pre-commit");
+    eval();
+```
+
+Despues Comitear:
+
+```bash
+$ git add .
+$ git commit -m "test commit"
+```
+
+El Hook lo que realiza es cancelar el Commit ya que revisa en los archivos que se comitea
+si existen las funciones configuradas que no deben pasar.
+
+**output**
+
+
+```bash
+Se encontraron los siguientes Errores
+file: test.php line: 2 codigo:  var_dump("Test Pre-commit");
+
+file: test.php line: 3 codigo:  print_r("Test Pre-commit");
+
+file: test.php line: 4 codigo:  eval();
+If you are sure you want to commit those files, use --no-verify option
+```
+
+
+En el caso que sea necesario comitear realizar lo siguiente:
+
+```bash
+$ git commit -m "test commit" --no-verify
+```
+
+Esto hace que no se ejecuten los hooks
+
+
+## Microsoft Windows
+
+**Agregar el path del binario de python a las variables de entorno**
