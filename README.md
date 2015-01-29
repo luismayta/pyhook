@@ -54,6 +54,4 @@ $ http://git-scm.com/downloads
 $ https://www.python.org
 ```
 
-## How To Use
-
-   docs/how-to.md
+## [How To Use](docs/how-to.md)
