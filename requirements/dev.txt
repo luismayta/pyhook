@@ -5,3 +5,4 @@ tox
 coverage
 coveralls
 grip
+jedi
