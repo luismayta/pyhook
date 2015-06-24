@@ -88,8 +88,8 @@ def check_repo():
             if _is_file_php(filename):
                 files_php.append((filename, None))
         except IOError:
-            print 'File not Found (probably deleted): {}\t\tSKIPPED'.format(
-                filename)
+            print ("File not Found (probably deleted): {0}".format(
+                filename))
 
     if len(files_php) == 0:
         sys.exit(0)
@@ -124,11 +124,11 @@ def main():
 
     result = check_repo()
     if result:
-        print "Se encontraron los siguientes Errores"
+        print("Se encontraron los siguientes Errores")
         for error in result:
-            print "file: {0} line: {1} codigo: {2}".format(error[0],
+            print("file: {0} line: {1} codigo: {2}".format(error[0],
                                                          error[1],
-                                                         error[2])
+                                                         error[2]))
         message = ("If you are sure you want to commit",
                    "those files,",
                    "use --no-verify option",)
